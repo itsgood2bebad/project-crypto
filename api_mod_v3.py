@@ -59,13 +59,14 @@ class n_current:
         with open(self.path[0],'a') as f:
             dict_data = csv.writer(f)
             dict_data.writerow(eth_change)
+        print(eth_change)
         for val_2 in self.data[1]['data']['quotes']['USD'].values():
             btc_change.append(val_2)
         btc_change.append(self.data[1]['metadata']['timestamp'])
         with open(self.path[1],'a') as f:
             dict_data = csv.writer(f)
             dict_data.writerow(btc_change)
-            print('nouvelle entrées dans les csv')
+        print(btc_change)
         return (eth_change[:6]+btc_change[:6])
 
     def run(self):
@@ -100,7 +101,7 @@ class recup_val:
         self.week = (scan[5],scan[11],l_scan[5],l_scan[11])
         self.mark = (mark_stat[0],mark_stat[1])
         self.eth_note = 0
-        self.etc_evo = (scan[2] - l_scan[2])#evolution market depuis dernier scan
+        self.etc_evo = (l_scan[2] - scan[2])#evolution market depuis dernier scan
         self.etc_percent = round(((scan[0]/(l_scan[0]/100))-100),2)
 
     def crypt_eval(self):

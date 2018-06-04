@@ -71,20 +71,68 @@ class n_current:
     def run(self):
 
         if os.path.exists(self.path[0]):
-            self.addrows()
+            val = self.addrows()
         else:
             self.create_col(),
-            self.addrows()
+            val = self.addrows()
+        return val
 
-    def market_val():
+    def market_val(self):
 
-        df = pd.read_csv('csv_test.csv')
+        df = pd.read_csv('newstest3.csv')
         return(((df.market_cap).mean()),(max(df.market_cap)))
 
     def last_row(path):
 
         df = pd.read_csv(path)
         return (df[-1:].values.tolist())[0][:6]
+
+
+class recup_val:
+
+
+    def __init__(self, scan, l_scan, mark_stat):
+
+        self.price = (scan[0],scan[6],l_scan[0],l_scan[6])
+        self.market = (scan[2],scan[8],l_scan[2],l_scan[8])
+        self.hour = (scan[3],scan[9],l_scan[3],l_scan[9])
+        self.day = (scan[4],scan[10],l_scan[4],l_scan[10])
+        self.week = (scan[5],scan[11],l_scan[5],l_scan[11])
+        self.mark = (mark_stat[0],mark_stat[1])
+        self.eth_note = 0
+        self.etc_evo = (scan[2] - l_scan[2])#evolution market depuis dernier scan
+        self.etc_percent = round(((scan[0]/(l_scan[0]/100))-100),2)
+
+    def crypt_eval(self):
+
+
+        if self.hour[1] > 0:
+            self.eth_note =+ 4
+        if self.hour[1] < 0:
+            self.eth_note =-4
+        if self.day[1] > 0:
+            self.eth_note =+ 2
+        if self.day[1] < 0:
+            self.eth_note =- 2
+        if self.market[0] > self.mark[1]:
+            self.eth_note =+ 6
+        if self.market[0] > self.mark[0]:
+            self.eth_note =+ 2
+        if self.market[0] < self.mark[0]:
+            self.eth_note =+ 3
+
+    def print_info(self):
+        print('\n'*2)
+        print("- Le cap du marché jounalier de l ether est a :",self.market[0])
+        print("- Le cap du marché jounalier du btc est a :",self.market[1])
+        print('_'*100,'\n'*2)
+        print("- L'évolution de l ether est de ",self.hour[0],"%  pour cette dernière heure")
+        print("- L'évolution du bitcoin est de ",self.hour[1],"%  pour cette dernière heure")
+        print('_'*100,'\n'*4)
+        print("- La note actuel de l ether est de :",self.eth_note)
+        print("- Le marché a evoluée de {} depuis la dérnière séquence ".format(self.etc_evo))
+        print("- Le prix de l'ether a evoluée de {} depuis la dérnière séquence ".format(round((self.price[0] - self.price[2]),2)))
+        print("- L'ether a evoluée de {}% depuis la dérnière séquence ".format(self.etc_percent))
 
 
 def registre_s(obj):

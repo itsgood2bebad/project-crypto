@@ -38,9 +38,7 @@ class n_current:
 
     def create_col(self):
 
-        fieldn = []
-        for val in self.data[0]['data']['quotes']['USD']:
-            fieldn.append(val)
+        fieldn = [ val.title() for val in self.data[0]['data']['quotes']['USD']]
         fieldn.append('timestamp')
         with open(self.path[0],'w') as f, open(self.path[1],'w') as g:
             dict_data = csv.DictWriter(f,fieldnames=fieldn)
@@ -51,22 +49,17 @@ class n_current:
 
     def addrows(self):
 
-        eth_change = []
-        btc_change = []
-        for val in self.data[0]['data']['quotes']['USD'].values():
-            eth_change.append(val)
+        eth_change = [round(val,2) for val in self.data[0]['data']['quotes']['USD'].values()]
         eth_change.append(self.data[0]['metadata']['timestamp'])
         with open(self.path[0],'a') as f:
             dict_data = csv.writer(f)
             dict_data.writerow(eth_change)
-        print(eth_change)
-        for val_2 in self.data[1]['data']['quotes']['USD'].values():
-            btc_change.append(val_2)
+        btc_change = [round(val,2) for val in self.data[1]['data']['quotes']['USD'].values()]
         btc_change.append(self.data[1]['metadata']['timestamp'])
         with open(self.path[1],'a') as f:
             dict_data = csv.writer(f)
             dict_data.writerow(btc_change)
-        print(btc_change)
+        print('nouvelle entrées dans les csv')
         return (eth_change[:6]+btc_change[:6])
 
     def run(self):
@@ -79,15 +72,9 @@ class n_current:
         return val
 
     def market_val(self):
-
+        ### a revoir
         df = pd.read_csv('newstest3.csv')
         return(((df.market_cap).mean()),(max(df.market_cap)))
-
-    def last_row(path):
-
-        df = pd.read_csv(path)
-        return (df[-1:].values.tolist())[0][:6]
-
 
 class recup_val:
 

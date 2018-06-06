@@ -74,7 +74,7 @@ class n_current:
     def market_val(self):
         ### a revoir
         df = pd.read_csv('newstest3.csv')
-        return(((df.market_cap).mean()),(max(df.market_cap)))
+        return(((df.Market_Cap).mean()),(max(df.Market_Cap)))
 
 class recup_val:
 
@@ -123,12 +123,12 @@ class recup_val:
         print("- L'ether a evoluée de {}% depuis la dérnière séquence ".format(self.etc_percent))
 
 
-def registre_s(obj):
-        with open('a', 'wb') as f:
+def registre_s(obj,path):
+        with open(path, 'wb') as f:
             save = pickle.Pickler(f)
             save.dump(obj)
 
-def registre_l():
-        with open('a','rb') as f:
+def registre_l(path):
+        with open(path,'rb') as f:
             load = pickle.load(f)
             return load
